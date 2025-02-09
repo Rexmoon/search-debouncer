@@ -8,17 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject private var appCoordinator: AppCoordinator
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack(path: $appCoordinator.navigationPath) {
+            appCoordinator
+                .build(route: .home)
+                .navigationDestination(for: AppTransition.self) { route in
+                    appCoordinator.build(route: route)
+                }
         }
-        .padding()
     }
-}
-
-#Preview {
-    ContentView()
 }

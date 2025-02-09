@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct search_debouncerApp: App {
+    @StateObject private var appCoordinator: AppCoordinator = .init()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(appCoordinator)
         }
     }
 }
