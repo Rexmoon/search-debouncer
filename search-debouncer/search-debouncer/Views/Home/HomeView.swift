@@ -8,12 +8,25 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var characterList: [CharacterModel] = []
+    
+    private let characterStore: CharacterStore = NetworkManager()
+    
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Home view")
+                List(characterList) { character in
+                    Text(character.name)
+                }
             }
             .navigationTitle("Home")
+            .task {
+                do {
+                    characterList = try await characterStore.filterCharacters(by: "Rick")
+                } catch {
+                    debugPrint("Error: \(error.localizedDescription)")
+                }
+            }
         }
     }
 }
