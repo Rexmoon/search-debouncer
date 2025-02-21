@@ -16,12 +16,23 @@ protocol HomeViewModelRepresentable: ObservableObject {
     var isLoading: Bool { get }
     var searchText: String { get set }
     var characters: [CharacterModel] { get }
+    var shouldShowEmptyView: Bool { get }
 }
 
 final class HomeViewModel<R: AppRouter> {
     @Published var isLoading: Bool = false
     @Published var searchText: String = ""
     @Published var characters: [CharacterModel] = []
+    
+    var shouldShowEmptyView: Bool {
+        characters.isEmpty
+    }
+    
+    private var canSearch: Bool {
+        !searchText.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        ).isEmpty
+    }
     
     private var anyCancellable: AnyCancellable?
 
@@ -48,8 +59,10 @@ final class HomeViewModel<R: AppRouter> {
     }
     
     private func filterCharacters(by text: String) {
+        guard canSearch else { return }
         debugPrint("Filtering by: \(text)")
         isLoading = true
+        characters = []
         
         Task { @MainActor in
             defer { isLoading = false }

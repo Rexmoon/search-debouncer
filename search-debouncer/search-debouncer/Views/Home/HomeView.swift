@@ -18,8 +18,12 @@ struct HomeView<ViewModel: HomeViewModelRepresentable>: View {
     var body: some View {
         NavigationStack {
             VStack {
-                List(viewModel.characters) { character in
-                    Text(character.name)
+                if viewModel.shouldShowEmptyView {
+                    emptyView
+                } else {
+                    List(viewModel.characters) { character in
+                        Text(character.name)
+                    }
                 }
             }
             .navigationTitle("Home")
@@ -30,6 +34,10 @@ struct HomeView<ViewModel: HomeViewModelRepresentable>: View {
                 }
             }
         }
+    }
+    
+    private var emptyView: some View {
+        Text("No results found")
     }
 }
 
