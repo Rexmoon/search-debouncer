@@ -37,7 +37,7 @@ struct HomeView<ViewModel: HomeViewModelRepresentable>: View {
     }
     
     private var emptyView: some View {
-        Text("No results found")
+        Text("No results found, try another search")
     }
 }
 
