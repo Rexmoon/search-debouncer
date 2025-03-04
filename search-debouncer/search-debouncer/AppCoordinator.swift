@@ -9,6 +9,11 @@ import SwiftUI
 
 final class AppCoordinator {
     @Published var navigationPath: NavigationPath = .init()
+    
+    private var homeView: some View {
+        let viewModel = HomeViewModel(router: self)
+        return HomeView(viewModel: viewModel)
+    }
 }
 
 // MARK: - Coordinator
@@ -16,7 +21,7 @@ final class AppCoordinator {
 extension AppCoordinator: Coordinator {
     func build(route: AppTransition) -> some View {
         switch route {
-            case .home: HomeView()
+            case .home: homeView
         }
     }
 }
